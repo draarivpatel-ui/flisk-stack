@@ -19,6 +19,16 @@ describe('apiBase', () => {
     );
   });
 
+  it('leaves an external API on its configured port when the local app uses a fallback port', () => {
+    expect(apiBase('https://api.example.com/api', page('app.flisk-stack.localhost', '8081'))).toBe(
+      'https://api.example.com/api',
+    );
+  });
+
+  it('keeps a same-origin API path without trying to add a port', () => {
+    expect(apiBase('/api/api', page('app.flisk-stack.localhost', '8081'))).toBe('/api/api');
+  });
+
   it('keeps a URL that already has a port, and works without a page', () => {
     expect(apiBase('http://api.x.localhost:9000/api/api', page('app.x.localhost', '8081'))).toBe('http://api.x.localhost:9000/api/api');
     expect(apiBase('http://api.x.localhost/api/api', undefined)).toBe('http://api.x.localhost/api/api');
